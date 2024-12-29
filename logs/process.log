@@ -1,0 +1,20 @@
+2024-12-30 00:17:12,739 - INFO - Script execution started.
+2024-12-30 00:17:12,739 - INFO - Environment variables loaded.
+2024-12-30 00:17:12,739 - INFO - Starting main process...
+2024-12-30 00:17:12,739 - INFO - Starting to read files from directory: /Users/mdf/Code/SwiftDocsAI
+2024-12-30 00:17:12,791 - INFO - Total files found: 3
+2024-12-30 00:17:12,791 - INFO - Processing mode determined: sequential
+2024-12-30 00:17:12,791 - INFO - Processing files sequentially...
+2024-12-30 00:17:12,791 - INFO - Processing file: /Users/mdf/Code/SwiftDocsAI/requirements.txt
+2024-12-30 00:17:12,791 - INFO - File processed: /Users/mdf/Code/SwiftDocsAI/requirements.txt, Total chunks: 1
+2024-12-30 00:17:12,791 - INFO - Processing file: /Users/mdf/Code/SwiftDocsAI/sample.env
+2024-12-30 00:17:12,791 - INFO - File processed: /Users/mdf/Code/SwiftDocsAI/sample.env, Total chunks: 1
+2024-12-30 00:17:12,791 - INFO - Processing file: /Users/mdf/Code/SwiftDocsAI/main.py
+2024-12-30 00:17:12,792 - INFO - File processed: /Users/mdf/Code/SwiftDocsAI/main.py, Total chunks: 1
+2024-12-30 00:17:12,792 - INFO - Total chunks created: 3
+2024-12-30 00:17:12,792 - INFO - Combining chunks...
+2024-12-30 00:17:12,792 - INFO - Chunks combined into 1 chunks to reduce the number of requests.
+2024-12-30 00:17:12,792 - INFO - Sending chunks for processing...
+2024-12-30 00:17:12,800 - INFO - Found credentials in environment variables.
+2024-12-30 00:17:12,827 - INFO - Processing chunks with Claude sequentially...
+2024-12-30 00:18:16,830 - INFO - Processing complete. Output saved to: README.md
