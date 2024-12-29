@@ -588,6 +588,7 @@ if __name__ == "__main__":
         "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md",
         ".DS_Store",
+        ".env"
     ]
     OUTPUT_FILE = "README.md"
     MODEL_ID = "anthropic.claude-3-5-sonnet-20240620-v1:0"
