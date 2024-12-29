@@ -424,7 +424,7 @@ def ask_claude_batch(
         return json.loads(response["body"].read())["content"][0]["text"]
 
     # Configuration for batching
-    BATCH_SIZE = 50  # Number of requests per batch
+    BATCH_SIZE = 8  # Number of requests per batch
     TIME_WINDOW = 60  # Time window in seconds for the batch
 
     # Function to invoke the model with retry logic
@@ -478,7 +478,7 @@ def ask_claude_batch(
             batch = context_chunks[batch_start:batch_end]
 
             logging.info(
-                f"Processing batch {batch_start // batch_size + 1} (chunks {batch_start}-{batch_end - 1})..."
+                f"Processing batch {batch_start // batch_size + 1} (chunks {batch_start + 1}-{batch_end})..."
             )
             with ThreadPoolExecutor() as executor:
                 batch_results = list(
@@ -504,14 +504,15 @@ def ask_claude_batch(
         # Combine chunks to reduce the number of requests
         combined_results = combine_results(results)
 
-        # Process results in batches
-        results = process_in_batches(combined_results, BATCH_SIZE, TIME_WINDOW)
+        while len(combined_results) != 1:
+            # Process results in batches
+            results = process_in_batches(combined_results, BATCH_SIZE, TIME_WINDOW)
+            # Combine chunks to reduce the number of requests
+            combined_results = combine_results(results)
 
         # Consolidate results into a single document
-        consolidated_documents = "\n\n".join(results)
-        final_results = invoke_model(
-            "Merge these documents into a consolidated single document.",
-            consolidated_documents,
+        final_results = invoke_model_with_retry(
+            combined_results[0][0], combined_results[0][1]
         )
 
         return final_results
@@ -522,7 +523,7 @@ def ask_claude_batch(
         consolidated_context = ""
         final_response = ""
         for metadata, chunk in context_chunks:
-            response_text = invoke_model(
+            response_text = invoke_model_with_retry(
                 "### Previous Context:\n"
                 + consolidated_context
                 + "\n\n### Current Context:\n"
@@ -580,15 +581,19 @@ if __name__ == "__main__":
         ".yml",
         ".txt",
         ".env",
+        ".json",
+        ".sh",
+        ".html",
     ]  # Use empty list or None to process all file types.
-    EXCLUDE_FOLDERS = [".git", ".venv", "node_modules", "logs"]
+    EXCLUDE_FOLDERS = [".git", ".venv", "node_modules", "logs", "docs"]
     EXCLUDE_FILES = [
         "README.md",
         "LICENSE",
         "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md",
         ".DS_Store",
-        ".env"
+        ".env",
+        ".md",
     ]
     OUTPUT_FILE = "README.md"
     MODEL_ID = "anthropic.claude-3-5-sonnet-20240620-v1:0"
@@ -605,3 +610,6 @@ if __name__ == "__main__":
     except Exception as e:
         logging.error(f"An error occurred: {e}")
         raise e
+
+
+
